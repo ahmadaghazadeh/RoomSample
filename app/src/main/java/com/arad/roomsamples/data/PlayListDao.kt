@@ -6,6 +6,6 @@ import androidx.room.*
 interface PlayListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlayLists(vararg playlist: Playlist)
+    suspend   fun insertPlayLists(vararg playlist: Playlist)
 
 }

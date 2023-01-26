@@ -6,16 +6,16 @@ import androidx.room.*
 interface SongDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSongs(vararg song: Song)
+    suspend  fun insertSongs(vararg song: Song)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPlaylistSong(vararg playlistSongCrossRef: PlaylistSongCrossRef)
+    suspend   fun insertPlaylistSong(vararg playlistSongCrossRef: PlaylistSongCrossRef)
 
     @Transaction
     @Query("SELECT * FROM Playlist")
-    fun getPlaylistsWithSongs(): List<PlaylistWithSongs>
+    suspend   fun getPlaylistsWithSongs(): List<PlaylistWithSongs>
 
     @Transaction
     @Query("SELECT * FROM Song")
-    fun getSongsWithPlaylists(): List<SongWithPlaylists>
+    suspend  fun getSongsWithPlaylists(): List<SongWithPlaylists>
 }

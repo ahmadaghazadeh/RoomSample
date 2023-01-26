@@ -1,18 +1,22 @@
 package com.arad.roomsamples.data
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUsers(vararg users: User)
+    suspend   fun insertUsers(vararg users: User)
 
     @Transaction
     @Query("SELECT * FROM User")
-    fun getUsersWithPlaylists(): List<UserWithPlaylists>
+    suspend   fun getUsersWithPlaylists(): List<UserWithPlaylists>
 
     @Transaction
     @Query("SELECT * FROM User")
-    fun getUsersWithPlaylistsAndSongs(): List<UserWithPlaylistsAndSongs>
+    suspend   fun getUsersWithPlaylistsAndSongs(): List<UserWithPlaylistsAndSongs>
+
+    @Query("SELECT * from user WHERE userId = :userId")
+    fun loadUser(userId: Long): Flow<List<User>>
 }

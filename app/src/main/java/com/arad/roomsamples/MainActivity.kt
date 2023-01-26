@@ -1,7 +1,6 @@
 package com.arad.roomsamples
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -24,10 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.room.Room
 import com.arad.roomsamples.data.*
 import com.arad.roomsamples.ui.theme.RoomSamplesTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import kotlin.math.log
 
 class MainActivity : ComponentActivity() {
@@ -35,69 +32,94 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
-            val db = Room.databaseBuilder(
-                applicationContext,
-                AppDatabase::class.java, "database-name"
-            ).allowMainThreadQueries().build()
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).build()
+        GlobalScope.launch(Dispatchers.IO) {
 
-            val userDao = db.userDao()
-            userDao.insertUsers(
-                User(1,"Ahmad",41),
-                User(2,"Arad",5))
+            insertData(db);
+            val userWithPlaylists=getUsersWithPlaylists(db);
+            val playlistWithSongs= getPlaylistsWithSongs(db);
+            val userWithPlaylistsAndSongs= getSongsWithPlaylists(db);
 
-            val playlistDao = db.playListDao()
-            playlistDao.insertPlayLists(Playlist(1,1,"Pop"),
-                Playlist(2,1,"Clasic 1"),
-                Playlist(3,2,"Clasic 2"),
-                Playlist(5,2,"Clasic 3"),
-                Playlist(4,2,"Clasic 4"))
 
-            var userWithPlaylists : List<UserWithPlaylists> = userDao.getUsersWithPlaylists()
-
-            val songDao= db.SongDao()
-            songDao.insertSongs(
-                Song(1,"FlowersMiley","Cyrus"),
-            Song(2,"Kill ","BillSZA"),
-            Song(3,"Creepin","Savage"),
-            Song(4,"Unholy ","Kim Petras"),
-            Song(5,"Escapism","Shake"),
-            Song(6,"Shakira","Shakira"),
-            Song(7,"Calm Down","Selena Gomez"))
-
-            songDao.insertPlaylistSong(
-                PlaylistSongCrossRef(1,1),
-                PlaylistSongCrossRef(1,2),
-                PlaylistSongCrossRef(1,3),
-                PlaylistSongCrossRef(1,4),
-                PlaylistSongCrossRef(1,5),
-                PlaylistSongCrossRef(1,6),
-                PlaylistSongCrossRef(1,7),
-                PlaylistSongCrossRef(2,1),
-                PlaylistSongCrossRef(2,2),
-                PlaylistSongCrossRef(2,3),
-                PlaylistSongCrossRef(2,4),)
-
-            var playlistWithSongs: List<PlaylistWithSongs> = songDao.getPlaylistsWithSongs()
-
-            var userWithPlaylistsAndSongs: List<UserWithPlaylistsAndSongs> = userDao.getUsersWithPlaylistsAndSongs()
-            setContent {
-                RoomSamplesTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        UserWithPlaylists(userWithPlaylists,playlistWithSongs,userWithPlaylistsAndSongs)
+            withContext(Dispatchers.Main) {
+                setContent {
+                    RoomSamplesTheme {
+                        // A surface container using the 'background' color from the theme
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colors.background
+                        ) {
+                            UserWithPlaylists(userWithPlaylists,playlistWithSongs,userWithPlaylistsAndSongs)
+                        }
                     }
                 }
             }
-
-        }catch (e: Exception){
-            println(e.message.toString())
         }
+
+
     }
 }
+
+suspend fun insertData(db:AppDatabase) {
+    val userDao = db.userDao()
+    userDao.insertUsers(
+        User(1,"Ahmad",41),
+        User(2,"Arad",5))
+
+    val playlistDao = db.playListDao()
+    playlistDao.insertPlayLists(Playlist(1,1,"Pop"),
+        Playlist(2,1,"Clasic 1"),
+        Playlist(3,2,"Clasic 2"),
+        Playlist(5,2,"Clasic 3"),
+        Playlist(4,2,"Clasic 4"))
+    val songDao= db.SongDao()
+    songDao.insertSongs(
+        Song(1,"FlowersMiley","Cyrus"),
+        Song(2,"Kill ","BillSZA"),
+        Song(3,"Creepin","Savage"),
+        Song(4,"Unholy ","Kim Petras"),
+        Song(5,"Escapism","Shake"),
+        Song(6,"Shakira","Shakira"),
+        Song(7,"Calm Down","Selena Gomez"))
+
+    songDao.insertPlaylistSong(
+        PlaylistSongCrossRef(1,1),
+        PlaylistSongCrossRef(1,2),
+        PlaylistSongCrossRef(1,3),
+        PlaylistSongCrossRef(1,4),
+        PlaylistSongCrossRef(1,5),
+        PlaylistSongCrossRef(1,6),
+        PlaylistSongCrossRef(1,7),
+        PlaylistSongCrossRef(2,1),
+        PlaylistSongCrossRef(2,2),
+        PlaylistSongCrossRef(2,3),
+        PlaylistSongCrossRef(2,4),)
+}
+
+
+suspend fun getUsersWithPlaylists(db:AppDatabase): List<UserWithPlaylists> {
+    val userDao = db.userDao()
+    return userDao.getUsersWithPlaylists()
+}
+
+suspend fun getPlaylistsWithSongs(db:AppDatabase): List<PlaylistWithSongs> {
+    val songDao= db.SongDao()
+    return songDao.getPlaylistsWithSongs()
+}
+
+suspend fun getSongsWithPlaylists(db:AppDatabase): List<UserWithPlaylistsAndSongs> {
+    val userDao = db.userDao()
+    return userDao.getUsersWithPlaylistsAndSongs()
+}
+
+fun loadUser(db:AppDatabase,userId:Long): Flow<List<User>> {
+    val userDao = db.userDao()
+    return userDao.loadUser(userId)
+}
+
 
 @Composable
 fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSongs: List<PlaylistWithSongs>,UserWithPlaylistsAndSongs:List<UserWithPlaylistsAndSongs>) {
