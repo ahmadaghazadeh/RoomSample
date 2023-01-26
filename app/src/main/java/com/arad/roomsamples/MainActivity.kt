@@ -14,10 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -80,7 +77,10 @@ class MainActivity : ComponentActivity() {
                 PlaylistSongCrossRef(2,2),
                 PlaylistSongCrossRef(2,3),
                 PlaylistSongCrossRef(2,4),)
+
             var playlistWithSongs: List<PlaylistWithSongs> = songDao.getPlaylistsWithSongs()
+
+            var userWithPlaylistsAndSongs: List<UserWithPlaylistsAndSongs> = userDao.getUsersWithPlaylistsAndSongs()
             setContent {
                 RoomSamplesTheme {
                     // A surface container using the 'background' color from the theme
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        UserWithPlaylists(userWithPlaylists,playlistWithSongs)
+                        UserWithPlaylists(userWithPlaylists,playlistWithSongs,userWithPlaylistsAndSongs)
                     }
                 }
             }
@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSongs: List<PlaylistWithSongs>) {
+fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSongs: List<PlaylistWithSongs>,UserWithPlaylistsAndSongs:List<UserWithPlaylistsAndSongs>) {
     LazyColumn(modifier = Modifier.fillMaxWidth(0.5f)) {
         item {
             Card( modifier = Modifier
@@ -109,6 +109,7 @@ fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSon
                 .padding(8.dp)) {
                 Text(text = "One-to-Many")
             }
+
         }
         items(userWithPlaylists) { listItem ->
             Card(
@@ -136,8 +137,11 @@ fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSon
                     }
                 }
             }
+
         }
+
         item {
+            Divider(color = Color.Black)
             Card( modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
@@ -172,7 +176,45 @@ fun UserWithPlaylists(userWithPlaylists: List<UserWithPlaylists>,playlistWithSon
                 }
             }
         }
+        item {
+            Divider(color = Color.Black)
+            Card( modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .padding(8.dp)) {
+                Text(text = "Nested")
+            }
+        }
+        items(UserWithPlaylistsAndSongs) { listItem ->
+            Card(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(8.dp)
 
+            ) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(8.dp)) {
+                    Text(text = "Play List: ${listItem.user.name}", color = Color.DarkGray)
+                    LazyRow(modifier = Modifier.fillMaxHeight()) {
+                        itemsIndexed(listItem.playlists) { index,playList ->{}
+                            Card(modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                            ) {
+                                Column() {
+                                    Text(text = "Play List: ${playList.playlist.playlistName}", color = Color.DarkGray)
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

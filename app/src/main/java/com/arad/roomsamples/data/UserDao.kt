@@ -11,4 +11,8 @@ interface UserDao {
     @Transaction
     @Query("SELECT * FROM User")
     fun getUsersWithPlaylists(): List<UserWithPlaylists>
+
+    @Transaction
+    @Query("SELECT * FROM User")
+    fun getUsersWithPlaylistsAndSongs(): List<UserWithPlaylistsAndSongs>
 }
