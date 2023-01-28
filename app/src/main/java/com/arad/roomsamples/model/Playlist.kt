@@ -1,4 +1,4 @@
-package com.arad.roomsamples.data
+package com.arad.roomsamples.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
