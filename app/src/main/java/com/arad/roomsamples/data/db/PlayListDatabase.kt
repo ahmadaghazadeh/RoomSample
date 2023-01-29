@@ -14,17 +14,17 @@ private const val DB_NAME = "playlist_database"
 @Database(entities = [User::class, Playlist::class, Song::class, PlaylistSongCrossRef::class],
     exportSchema = true,
     version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class PlayListDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun playListDao(): PlayListDao
-    abstract fun SongDao(): SongDao
+    abstract fun songDao(): SongDao
 
     companion object {
-        fun create(context: Context): AppDatabase {
+        fun create(context: Context): PlayListDatabase {
 
             return Room.databaseBuilder(
                 context,
-                AppDatabase::class.java,
+                PlayListDatabase::class.java,
                 DB_NAME
             ).build()
         }

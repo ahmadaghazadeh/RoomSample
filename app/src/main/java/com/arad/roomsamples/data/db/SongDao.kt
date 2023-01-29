@@ -18,9 +18,9 @@ interface SongDao {
 
     @Transaction
     @Query("SELECT * FROM Playlist")
-      fun getPlaylistsWithSongs(): Flow<List<PlaylistWithSongs>>
+    fun getPlaylistsWithSongs(): Flow<List<PlaylistWithSongs>>
 
     @Transaction
     @Query("SELECT * FROM Song")
-    suspend  fun getSongsWithPlaylists(): List<SongWithPlaylists>
+    fun getSongsWithPlaylists(): Flow<List<SongWithPlaylists>>
 }

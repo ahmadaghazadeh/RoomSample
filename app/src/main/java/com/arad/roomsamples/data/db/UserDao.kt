@@ -14,12 +14,12 @@ interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM User")
-       fun getUsersWithPlaylists(): Flow<List<UserWithPlaylists>>
+    fun getUsersWithPlaylists(): Flow<List<UserWithPlaylists>>
 
     @Transaction
     @Query("SELECT * FROM User")
-      fun getUsersWithPlaylistsAndSongs(): Flow<List<UserWithPlaylistsAndSongs>>
+    fun getUsersWithPlaylistsAndSongs(): Flow<List<UserWithPlaylistsAndSongs>>
 
     @Query("SELECT * from user ")
-    fun loadUsers(): Flow<List<User>>
+    fun getUsers(): Flow<List<User>>
 }
