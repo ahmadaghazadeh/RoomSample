@@ -14,7 +14,7 @@ class UserWithPlaylistsViewModel @Inject constructor(
     private val repository: PlayListRepository): ViewModel() {
 
 
-    var UserWithPlaylists=repository.getUsersWithPlaylists()
+    var userWithPlaylists=repository.getUsersWithPlaylists()
     var playlistWithSongs=repository.getPlaylistsWithSongs()
     var userWithPlaylistsAndSongs=repository.getUsersWithPlaylistsAndSongs()
 
@@ -29,14 +29,14 @@ class UserWithPlaylistsViewModel @Inject constructor(
             repository.insertUsers(
                 User(i.toLong(),"User${i}",i*5),
             )
-            delay(500)
+            delay(2000)
         }
 
         repeat(5) { i ->
             repository.insertPlayLists(
                 Playlist(i.toLong(),i.toLong(),"Clasic 1"),
             )
-            delay(500)
+            delay(4000)
         }
 
         repository.insertSongs(
@@ -57,7 +57,7 @@ class UserWithPlaylistsViewModel @Inject constructor(
                 PlaylistSongCrossRef(i.toLong(),5),
                 PlaylistSongCrossRef(i.toLong(),6),
                 PlaylistSongCrossRef(i.toLong(),7),)
-            delay(500)
+            delay(5000)
         }
 
     }

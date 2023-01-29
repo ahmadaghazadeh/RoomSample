@@ -15,13 +15,7 @@ q
 Aapp/src/main/java/com/arad/roomsamples/model/PlaylistWithSongs.kt,5\3\53bf20821604d0b215a5a607961fbd856b0edb9d
 t
 Dapp/src/main/java/com/arad/roomsamples/model/PlaylistSongCrossRef.kt,0\2\0223c44ec82e06d00d76ad51e549e3a88d939e28
-r
-Bapp/src/main/java/com/arad/roomsamples/data/db/PlayListDatabase.kt,3\0\301d639197be69f1cee592e7fbe5b25c642d86fd
 g
 7app/src/main/java/com/arad/roomsamples/di/DataModule.kt,a\7\a7fb4a8278fa0d412a9570ba4b73e9118c698432
-i
-9app/src/main/java/com/arad/roomsamples/data/db/SongDao.kt,c\6\c6e3ea2a68c362a13570eaf3fa7fb5bb92dc54f2
-m
-=app/src/main/java/com/arad/roomsamples/data/db/PlayListDao.kt,f\3\f3af81b140bfe5e094d7cfd302f15765fc2b7cbf
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e

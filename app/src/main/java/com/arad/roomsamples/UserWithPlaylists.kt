@@ -27,7 +27,7 @@ fun UserWithPlaylistsScreen(
     viewModel: UserWithPlaylistsViewModel = hiltViewModel(),
 ) {
 
-    val userWithPlaylists by viewModel.UserWithPlaylists.collectAsState(
+    val userWithPlaylists by viewModel.userWithPlaylists.collectAsState(
         initial = emptyList()
     )
 

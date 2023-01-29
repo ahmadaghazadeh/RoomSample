@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -41,10 +42,10 @@ class MainActivity : ComponentActivity() {
                     RoomSamplesTheme {
                         // A surface container using the 'background' color from the theme
                         Surface(
-                            modifier = Modifier,
+                            modifier = Modifier.fillMaxWidth(),
                             color = MaterialTheme.colors.background
                         ) {
-                           // UserWithPlaylists(userWithPlaylists,playlistWithSongs,userWithPlaylistsAndSongs)
+                            UserWithPlaylistsScreen()
                         }
                     }
                 }
