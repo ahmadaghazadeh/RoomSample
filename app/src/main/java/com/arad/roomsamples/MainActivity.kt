@@ -23,6 +23,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+//TODO : refactor project's structure like  https://github.com/alexmamo/RoomJetpackCompose
+//TODO : refactor project's dependencies like  https://github.com/alexmamo/RoomJetpackCompose
+//TODO : obey SonarLint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
